@@ -15,5 +15,5 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func _on_NewGameButton_pressed():
+func _on_Btn_NewGame_pressed():
 	get_tree().change_scene("res://scenes/Game/GameScreen.tscn")

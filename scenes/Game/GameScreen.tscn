@@ -5,7 +5,7 @@
 [ext_resource path="res://scenes/Game/TxtBtn_GREEN.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/Game/TxtBtn_BLUE.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/Game/TxtBtn_RED.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/ButtonMiddle.png" type="Texture" id=6]
+[ext_resource path="res://assets/gfx/ButtonMiddle.png" type="Texture" id=6]
 
 [node name="GameScreen" type="Control"]
 anchor_right = 1.0
