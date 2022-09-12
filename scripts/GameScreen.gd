@@ -1,8 +1,9 @@
 extends Control
+
 # Constants to use
 enum btnNames {NONE, BLUE, RED, YELLOW, GREEN}
-const var fullCols: Array = [Color.transparent, Color.blue, Color.red, Color.yellow, Color.green]
-const var halfCols: Array = [Color.transparent, Color.darkblue, Color.darkred, Color.darkgoldenrod, Color.darkgreen]
+const fullCols: Array = [Color.transparent, Color.blue, Color.red, Color.yellow, Color.green]
+const halfCols: Array = [Color.transparent, Color.darkblue, Color.darkred, Color.darkgoldenrod, Color.darkgreen]
 
 # Game loop variables
 var moveList: Array = []
@@ -75,11 +76,9 @@ func playList():
 	var list: String = "Round " + str(moveList.size()) + ":"
 	
 	for c in moveList:
-		
 		s = btnNames.keys()[c]
 		simulatePress(c, s)
 		list += " " + s
-		wait(1)
 		
 	print(list)
 	
@@ -106,7 +105,8 @@ func simulatePress(c: int, s: String):
 	btn.set_toggle_mode(!b)
 
 
-# Singal callbacks
+
+# Signal callbacks
 func _on_TxtBtn_BLUE_button_up():
 	Input.action_press("ui_up")
 
