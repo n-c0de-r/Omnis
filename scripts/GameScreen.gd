@@ -51,6 +51,7 @@ func checkInput():
 	else:
 		isPlayerTurn = false
 		checkPoint = 0
+		
 
 
 
@@ -60,6 +61,7 @@ func compareChoices(choice):
 	else:
 		print("Wrong move. Game Over!")
 		isGameOver = true
+		get_tree().change_scene("res://scenes/TitleScreen.tscn")
 
 
 # Generates a new color to guess
@@ -77,7 +79,7 @@ func playList():
 	
 	for c in moveList:
 		s = btnNames.keys()[c]
-		simulatePress(c, s)
+		simulatePress(s)
 		list += " " + s
 		
 	print(list)
@@ -93,17 +95,27 @@ func resetGame():
 
 
 # Simulates a button press visually to the player
-func simulatePress(c: int, s: String):
+func simulatePress(s: String):
 	var b: bool = true
 	var btn: TextureButton
 	
 	btn = get_node("TxtBtn_%s" % s)
+	
+	# Simulate mouse down on the button by changing
+	# it's state. Texture takes care of the visuals
 	btn.set_toggle_mode(b)
 	btn.set_pressed_no_signal(b)
+	
+	# Wait a second
 	yield(get_tree().create_timer(1.0), "timeout")
+	
+	# Simulate mouse released on the button just visually
 	btn.set_pressed_no_signal(!b)
 	btn.set_toggle_mode(!b)
-
+	
+	# Doesn't work yet should wait till the next "press"
+	# But it skips to the next loop iteration
+	# yield(get_tree().create_timer(1.0), "timeout")
 
 
 # Signal callbacks
