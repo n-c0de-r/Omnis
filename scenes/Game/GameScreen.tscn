@@ -32,7 +32,15 @@ texture_normal = ExtResource( 6 )
 
 [node name="TxtBtn_GREEN" parent="." instance=ExtResource( 3 )]
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="button_up" from="TxtBtn_BLUE" to="." method="_on_TxtBtn_BLUE_button_up"]
 [connection signal="button_up" from="TxtBtn_RED" to="." method="_on_TxtBtn_RED_button_up"]
 [connection signal="button_up" from="TxtBtn_YELLOW" to="." method="_on_TxtBtn_YELLOW_button_up"]
 [connection signal="button_up" from="TxtBtn_GREEN" to="." method="_on_TxtBtn_GREEN_button_up"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]
