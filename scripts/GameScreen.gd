@@ -6,7 +6,7 @@ const fullCols: Array = [Color.transparent, Color.blue, Color.red, Color.yellow,
 const halfCols: Array = [Color.transparent, Color.darkblue, Color.darkred, Color.darkgoldenrod, Color.darkgreen]
 
 # Game loop variables
-var moveList: Array = []
+var moveList: Array = [1, 2, 4]
 var isGameOver: bool = false
 var isPlayerTurn: bool = false
 var playerChoice: int = 0
@@ -68,7 +68,7 @@ func compareChoices(choice):
 func getNextColor():
 	randomize()
 	var nextColor: int = (randi() % (btnNames.size()-1)+1)
-	moveList.append(nextColor)
+	#moveList.append(nextColor)
 	playList()
 
 
