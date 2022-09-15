@@ -2,21 +2,18 @@ extends Control
 
 # Constants to use
 enum btnNames {NONE, BLUE, RED, YELLOW, GREEN}
-# Old attempt in animation with self modulation, might need again or delete later!
-#const fullCols: Array = [Color.transparent, Color.blue, Color.red, Color.yellow, Color.green]
-#const halfCols: Array = [Color.transparent, Color.darkblue, Color.darkred, Color.darkgoldenrod, Color.darkgreen]
 
 # Game loop variables
-var checkPoint: int = 0
-var playerChoice: int = 0
-var isGameOver: bool = false
 var isPlayerTurn: bool = false
 
-var moveList: Array = [1, 2, 4]
-var nextButton: TextureButton
+var checkPoint: int = 0
+var deltaTime: float = 0
 
-onready var timer1: Timer = $Timer
-onready var timer2: Timer = $Timer2
+var moveList: Array = []
+var buttonList: Array = []
+var nextButton: TextureButton
+var playerChoice: TextureButton
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,71 +21,67 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if(!isGameOver): #bool
-		if(isPlayerTurn): #bool
-			checkInput()
-		else:
-			getNextColor()
+	deltaTime += _delta
+	
+	if isPlayerTurn: #bool
+		checkInput()
 	else:
-		if(Input.is_action_just_pressed("ui_accept")):
-			resetGame() # not implemented yet
+		getNextColor()
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		resetGame() # not fully implemented yet
 
 
 # Custom functions in alphabetical order
 func checkInput():
-	playerChoice = 0
+	playerChoice = null
 	
 	if Input.is_action_just_pressed("ui_up") and !$TxtBtn_BLUE.pressed:
-		playerChoice = btnNames.BLUE
-		#compareChoices(ButtonColors.BLUE)
+		playerChoice = $TxtBtn_BLUE
 	elif Input.is_action_just_pressed("ui_down") and !$TxtBtn_YELLOW.pressed:
-		playerChoice = btnNames.YELLOW
-		#compareChoices(ButtonColors.YELLOW)
+		playerChoice = $TxtBtn_YELLOW
 	elif Input.is_action_just_pressed("ui_right") and !$TxtBtn_RED.pressed:
-		playerChoice = btnNames.RED
-		#compareChoices(ButtonColors.RED)
+		playerChoice = $TxtBtn_RED
 	elif Input.is_action_just_pressed("ui_left") and !$TxtBtn_GREEN.pressed:
-		playerChoice = btnNames.GREEN
-		#compareChoices(ButtonColors.GREEN)
+		playerChoice = $TxtBtn_GREEN
 		
-	if(checkPoint != moveList.size()):
-		if (playerChoice != 0):
+	if checkPoint != buttonList.size():
+		if playerChoice != null:
 			compareChoices(playerChoice)
 	else:
 		isPlayerTurn = false
 		checkPoint = 0
-		
-
 
 
 func compareChoices(choice):
-	if(choice == moveList[checkPoint]):
+	if(choice == buttonList[checkPoint]):
 		checkPoint += 1
 	else:
 		print("Wrong move. Game Over!")
-		isGameOver = true
 		get_tree().change_scene("res://scenes/TitleScreen.tscn")
 
 
 # Generates a new color to guess
 func getNextColor():
 	randomize()
-	var nextColor: int = (randi() % (btnNames.size()-1)+1)
-	#moveList.append(nextColor)
+	var nextColor: int = randi() % (btnNames.size()-1)+1
+	var s: String = btnNames.keys()[nextColor]
+	nextButton = get_node("TxtBtn_%s" % s)
+	buttonList.append(nextButton)
 	playList()
 
 
 # Play the guess list visually to the player
 func playList():
 	var s: String
-	# Just for gebugging to see the current order
-	var list: String = "Round " + str(moveList.size()) + ":"
 	
-	for c in moveList:
-		# Gets the next button in order to simulate
-		s = btnNames.keys()[c]
-		nextButton = get_node("TxtBtn_%s" % s)
-		timer1.start(1)
+	# Just for debugging to see the current order
+	var list: String = "Round " + str(buttonList.size()) + ":"
+	
+	for btn in buttonList:
+		# debugging, delete later
+		s = str(btn.name).split("_")[1]
+		simulatePress(btn) #real code
 		
 		# debugging, delete later
 		list += " " + s
@@ -100,7 +93,7 @@ func playList():
 
 # Resets the game
 func resetGame():
-	moveList.clear()
+	buttonList.clear()
 	checkPoint = 0
 	isPlayerTurn = false
 
@@ -108,18 +101,17 @@ func resetGame():
 # Simulate mouse down on the button by changing
 # it's state. Texture takes care of the visuals
 func simulatePress(btn: TextureButton):
+	var start: int = deltaTime
+	#TODO: timing and delays should go here but
+	# I can't figure it out, and give up for now
+	
 	# Simulates a button press visually to the player
-	btn.set_toggle_mode(true)
-	btn.set_pressed_no_signal(true)
-	timer2.start(2)
-
-
-# Simulate mouse down on the button by changing
-# it's state. Texture takes care of the visuals
-func simulateRelease(btn: TextureButton):
-	# Simulate mouse released on the button just visually
-	btn.set_pressed_no_signal(false)
-	btn.set_toggle_mode(false)
+	if !btn.pressed:
+		btn.set_toggle_mode(!btn.pressed)
+		btn.set_pressed_no_signal(!btn.pressed)
+	else:
+		btn.set_pressed_no_signal(!btn.pressed)
+		btn.set_toggle_mode(!btn.pressed)
 
 
 # Signal callbacks
@@ -134,9 +126,3 @@ func _on_TxtBtn_YELLOW_button_up():
 
 func _on_TxtBtn_GREEN_button_up():
 	Input.action_press("ui_left")
-
-func _on_Timer_timeout():
-	simulatePress(nextButton)
-
-func _on_Timer2_timeout():
-	simulateRelease(nextButton)

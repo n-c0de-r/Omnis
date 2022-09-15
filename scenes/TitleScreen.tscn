@@ -21,7 +21,6 @@ margin_right = 472.0
 margin_bottom = 260.0
 
 [node name="Label" type="Label" parent="VBox_Menu"]
-visible = false
 margin_right = 944.0
 margin_bottom = 128.0
 size_flags_vertical = 1
@@ -35,8 +34,9 @@ align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBox_Menu"]
+margin_top = 132.0
 margin_right = 944.0
-margin_bottom = 220.0
+margin_bottom = 352.0
 alignment = 1
 
 [node name="VBox_Buttons" type="VBoxContainer" parent="VBox_Menu/HBoxContainer"]

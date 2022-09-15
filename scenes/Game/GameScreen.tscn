@@ -25,6 +25,9 @@ margin_bottom = 164.0
 texture_normal = ExtResource( 6 )
 
 [node name="TxtBtn_BLUE" parent="." instance=ExtResource( 4 )]
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="TxtBtn_RED" parent="." instance=ExtResource( 5 )]
 
