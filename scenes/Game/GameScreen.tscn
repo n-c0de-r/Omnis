@@ -1,10 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/GameScreen.gd" type="Script" id=1]
-[ext_resource path="res://scenes/Game/TxtBtn_YELLOW.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/Game/TxtBtn_GREEN.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/Game/TxtBtn_BLUE.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Game/TxtBtn_RED.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/Game/ButtonRing.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/gfx/ButtonMiddle.png" type="Texture" id=6]
 
 [node name="GameScreen" type="Control"]
@@ -24,26 +21,9 @@ margin_right = 164.0
 margin_bottom = 164.0
 texture_normal = ExtResource( 6 )
 
-[node name="TxtBtn_BLUE" parent="." instance=ExtResource( 4 )]
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="TxtBtn_RED" parent="." instance=ExtResource( 5 )]
-
-[node name="TxtBtn_YELLOW" parent="." instance=ExtResource( 2 )]
-
-[node name="TxtBtn_GREEN" parent="." instance=ExtResource( 3 )]
+[node name="ButtonRing" parent="." instance=ExtResource( 2 )]
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
 
-[node name="Timer2" type="Timer" parent="."]
-one_shot = true
-
-[connection signal="button_up" from="TxtBtn_BLUE" to="." method="_on_TxtBtn_BLUE_button_up"]
-[connection signal="button_up" from="TxtBtn_RED" to="." method="_on_TxtBtn_RED_button_up"]
-[connection signal="button_up" from="TxtBtn_YELLOW" to="." method="_on_TxtBtn_YELLOW_button_up"]
-[connection signal="button_up" from="TxtBtn_GREEN" to="." method="_on_TxtBtn_GREEN_button_up"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

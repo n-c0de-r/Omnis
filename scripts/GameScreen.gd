@@ -1,50 +1,56 @@
 extends Control
 
-# Constants to use
-enum btnNames {NONE, BLUE, RED, YELLOW, GREEN}
-
 # Game loop variables
 var isPlayerTurn: bool = false
 
 var checkPoint: int = 0
-var deltaTime: float = 0
+var timerCount: int = 0
 
-var moveList: Array = []
 var buttonList: Array = []
 var nextButton: TextureButton
 var playerChoice: TextureButton
 
+onready var timer: Timer = $Timer
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	initialize()
 	getNextColor()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	deltaTime += _delta
 	
 	if isPlayerTurn: #bool
 		checkInput()
 	else:
 		getNextColor()
 	
-	if Input.is_action_just_pressed("ui_accept"):
-		resetGame() # not fully implemented yet
+#	if Input.is_action_just_pressed("ui_accept"):
+#		resetGame() # not fully implemented yet
+
+
+# Sets up the buttons' signal connections
+func initialize():
+	$ButtonRing.blue.connect("button_up", self, "_on_blue_button_up")
+	$ButtonRing.red.connect("button_up", self, "_on_red_button_up")
+	$ButtonRing.yellow.connect("button_up", self, "_on_yellow_button_up")
+	$ButtonRing.green.connect("button_up", self, "_on_green_button_up")
 
 
 # Custom functions in alphabetical order
 func checkInput():
 	playerChoice = null
 	
-	if Input.is_action_just_pressed("ui_up") and !$TxtBtn_BLUE.pressed:
-		playerChoice = $TxtBtn_BLUE
-	elif Input.is_action_just_pressed("ui_down") and !$TxtBtn_YELLOW.pressed:
-		playerChoice = $TxtBtn_YELLOW
-	elif Input.is_action_just_pressed("ui_right") and !$TxtBtn_RED.pressed:
-		playerChoice = $TxtBtn_RED
-	elif Input.is_action_just_pressed("ui_left") and !$TxtBtn_GREEN.pressed:
-		playerChoice = $TxtBtn_GREEN
-		
+	if Input.is_action_just_pressed("ui_up") and !$ButtonRing.blue.pressed:
+		playerChoice = $ButtonRing.blue
+	elif Input.is_action_just_pressed("ui_down") and !$ButtonRing.yellow.pressed:
+		playerChoice = $ButtonRing.yellow
+	elif Input.is_action_just_pressed("ui_right") and !$ButtonRing.red.pressed:
+		playerChoice = $ButtonRing.red
+	elif Input.is_action_just_pressed("ui_left") and !$ButtonRing.green.pressed:
+		playerChoice = $ButtonRing.green
+	
 	if checkPoint != buttonList.size():
 		if playerChoice != null:
 			compareChoices(playerChoice)
@@ -57,38 +63,19 @@ func compareChoices(choice):
 	if(choice == buttonList[checkPoint]):
 		checkPoint += 1
 	else:
-		print("Wrong move. Game Over!")
 		get_tree().change_scene("res://scenes/TitleScreen.tscn")
 
 
 # Generates a new color to guess
 func getNextColor():
 	randomize()
-	var nextColor: int = randi() % (btnNames.size()-1)+1
-	var s: String = btnNames.keys()[nextColor]
-	nextButton = get_node("TxtBtn_%s" % s)
+	var buttons: Array = $ButtonRing.get_children()
+	var nextColor: int = randi() % buttons.size()
+	nextButton = buttons[nextColor]
 	buttonList.append(nextButton)
-	playList()
-
-
-# Play the guess list visually to the player
-func playList():
-	var s: String
-	
-	# Just for debugging to see the current order
-	var list: String = "Round " + str(buttonList.size()) + ":"
-	
-	for btn in buttonList:
-		# debugging, delete later
-		s = str(btn.name).split("_")[1]
-		simulatePress(btn) #real code
-		
-		# debugging, delete later
-		list += " " + s
-	# debugging, delete later
-	print(list)
-	
-	isPlayerTurn = !isPlayerTurn
+	isPlayerTurn = true
+	timerCount = 0
+	timer.start(1)
 
 
 # Resets the game
@@ -98,31 +85,22 @@ func resetGame():
 	isPlayerTurn = false
 
 
-# Simulate mouse down on the button by changing
-# it's state. Texture takes care of the visuals
-func simulatePress(btn: TextureButton):
-	var start: int = deltaTime
-	#TODO: timing and delays should go here but
-	# I can't figure it out, and give up for now
-	
-	# Simulates a button press visually to the player
-	if !btn.pressed:
-		btn.set_toggle_mode(!btn.pressed)
-		btn.set_pressed_no_signal(!btn.pressed)
-	else:
-		btn.set_pressed_no_signal(!btn.pressed)
-		btn.set_toggle_mode(!btn.pressed)
-
-
 # Signal callbacks
-func _on_TxtBtn_BLUE_button_up():
+func _on_blue_button_up():
 	Input.action_press("ui_up")
-
-func _on_TxtBtn_RED_button_up():
+func _on_red_button_up():
 	Input.action_press("ui_right")
-
-func _on_TxtBtn_YELLOW_button_up():
+func _on_yellow_button_up():
 	Input.action_press("ui_down")
-
-func _on_TxtBtn_GREEN_button_up():
+func _on_green_button_up():
 	Input.action_press("ui_left")
+
+
+# Plays the button order, simulating delayed presses
+func _on_Timer_timeout():
+	if timerCount != buttonList.size():
+		nextButton = buttonList[timerCount]
+		nextButton.simulateRelease()
+		nextButton.simulatePress()
+		timerCount += 1
+		timer.start(2)
