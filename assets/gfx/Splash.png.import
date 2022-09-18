@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ShapeArrow.png-d3ddac051d3658075e172dd32849eb76.stex"
+path="res://.import/Splash.png-346808d3dd2bf2f0992e8073a722b7b9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ShapeArrow.png"
-dest_files=[ "res://.import/ShapeArrow.png-d3ddac051d3658075e172dd32849eb76.stex" ]
+source_file="res://assets/gfx/Splash.png"
+dest_files=[ "res://.import/Splash.png-346808d3dd2bf2f0992e8073a722b7b9.stex" ]
 
 [params]
 

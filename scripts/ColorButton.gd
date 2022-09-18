@@ -1,7 +1,5 @@
 extends TextureButton
 
-onready var timer: Timer = $Timer
-
 # Sets the texture button to pressed
 func simulatePress():
 	self.set_toggle_mode(true)
@@ -16,7 +14,7 @@ func simulateRelease():
 
 # Starts the attached timer with given time
 func startTimer(time):
-	timer.start(time)
+	$Timer.start(time)
 
 func _on_Timer_timeout():
 	simulateRelease()

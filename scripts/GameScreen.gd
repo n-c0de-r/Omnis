@@ -8,8 +8,6 @@ var timerCount: int = 0
 
 var buttonList: Array = []
 
-#onready var timer: Timer = $Timer
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,7 +48,7 @@ func checkInput():
 	elif Input.is_action_just_pressed("ui_left"):
 		$ButtonRing.green.simulatePress()
 	
-	#TODO: This is messy too
+	#TODO: This is messy too, keyboard releases
 	if Input.is_action_just_released("ui_up"):
 		playerChoice = $ButtonRing.blue.simulateRelease()
 	elif Input.is_action_just_released("ui_down"):
@@ -79,9 +77,9 @@ func compareChoices(choice):
 
 # Generates a new color to guess
 func getNextColor():
+	var next: TextureButton
 	var buttons: Array = $ButtonRing.get_children()
 	var color: int = randi() % buttons.size()
-	var next: TextureButton
 	
 	randomize()
 	next = buttons[color]
@@ -124,5 +122,5 @@ func _on_green_button_up():
 # Delays the next press animation
 func _on_Timer_timeout():
 	playButtonPress()
-	# 1s light up, 1s till next
+	# 1s light up + 1s till next = 2s
 	$Timer.start(2)

@@ -1,15 +1,9 @@
 extends Control
 
-var blue:	TextureButton
-var red:	TextureButton
-var yellow:	TextureButton
-var green:	TextureButton
-
-func _ready():
-	blue =		$TxtBtn_BLUE
-	red =		$TxtBtn_RED
-	yellow =	$TxtBtn_YELLOW
-	green =		$TxtBtn_GREEN
+onready var blue:	TextureButton = $TxtBtn_BLUE
+onready var red:	TextureButton = $TxtBtn_RED
+onready var yellow:	TextureButton = $TxtBtn_YELLOW
+onready var green:	TextureButton = $TxtBtn_GREEN
 
 # Checks if all buttons are currently not pressed
 func areAllReleased():
@@ -17,7 +11,5 @@ func areAllReleased():
 
 # Releases all buttons, if needed
 func releaseAll():
-	blue.simulateRelease()
-	red.simulateRelease()
-	yellow.simulateRelease()
-	green.simulateRelease()
+	for btn in self.get_children():
+		btn.simulateRelease()
