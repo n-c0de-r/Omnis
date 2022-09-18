@@ -3,6 +3,7 @@ extends TextureButton
 var fullColor: Color = Color(1.0,1.0,1.0,1.0)
 var halfColor: Color = Color(0.5,0.5,0.5,0.5)
 
+# change visibility of symbols on presses
 func _process(_delta):
 	if self.pressed:
 		$AspCont_Symbols.modulate = fullColor
