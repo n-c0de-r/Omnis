@@ -4,6 +4,7 @@ extends Control
 var isPlayerTurn: bool = false
 
 var checkPoint: int = 0
+var playDirection: int = 1 # 1 forward, -1 reverse
 var timerCount: int = 0
 
 var buttonList: Array = []
@@ -11,6 +12,12 @@ var buttonList: Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#updateDirection("TODO") # maybe this?
+	# Maybe move into initialize?
+	if Settings.mode == Settings.modes.NORMAL:
+		playDirection = 1 # forward
+	if Settings.mode == Settings.modes.REVERSE:
+		playDirection = -1 #reverse
 	initialize()
 	getNextColor()
 
@@ -20,6 +27,12 @@ func _process(_delta):
 	if isPlayerTurn: #bool
 		checkInput()
 	else:
+		#Change direction every turn if needed
+		if Settings.mode == Settings.modes.FLIP:
+			playDirection *= -1 #change every turn
+		if Settings.mode == Settings.modes.CHAOS:
+		#Generates a -1 or +1 only
+			playDirection *= (randi()%2) * 2 - 1 #random
 		getNextColor()
 	
 #	if Input.is_action_just_pressed("ui_accept"):
@@ -67,9 +80,9 @@ func checkInput():
 		checkPoint = 0
 
 
-func compareChoices(choice):
+func compareChoices(choice: TextureButton):
 	if(choice == buttonList[checkPoint]):
-		checkPoint += 1
+		checkPoint += playDirection
 	else:
 		#TODO: Proper game over screen and transition
 		get_tree().change_scene("res://scenes/TitleScreen.tscn")
@@ -106,6 +119,20 @@ func resetGame():
 	buttonList.clear()
 	checkPoint = 0
 	isPlayerTurn = false
+
+
+# Function to change check order
+# Not all are needed every turn, probably obsolete
+#func updateDirection(choice):
+	#if choice == Settings.Modes.NORMAL:
+		#playDirection = 1 # forward
+	#if choice == Settings.Modes.REVERSE:
+		#playDirection = -1 #reverse
+	#if choice == Settings.Modes.FLIP:
+		#playDirection *= -1 #change every turn
+	#if choice == Settings.Modes.CHAOS:
+		#Generates a -1 or +1 only
+		#playDirection *= randi(1) * 2 -1 #random
 
 
 # Signal callbacks, it's a mess...

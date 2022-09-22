@@ -15,9 +15,13 @@ rect_pivot_offset = Vector2( 640, 360 )
 script = ExtResource( 5 )
 
 [node name="TxtBtn_BLUE" parent="." instance=ExtResource( 4 )]
+mouse_filter = 1
 
 [node name="TxtBtn_RED" parent="." instance=ExtResource( 1 )]
+mouse_filter = 1
 
 [node name="TxtBtn_YELLOW" parent="." instance=ExtResource( 2 )]
+mouse_filter = 1
 
 [node name="TxtBtn_GREEN" parent="." instance=ExtResource( 3 )]
+mouse_filter = 1

@@ -15,6 +15,10 @@ run/main_scene="res://scenes/TitleScreen.tscn"
 boot_splash/image="res://assets/gfx/Splash.png"
 config/icon="res://icon.png"
 
+[autoload]
+
+Settings="*res://Global.gd"
+
 [display]
 
 window/size/width=1280
