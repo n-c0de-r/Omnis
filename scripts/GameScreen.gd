@@ -34,17 +34,14 @@ func _process(_delta):
 		#Generates a -1 or +1 only
 			playDirection *= (randi()%2) * 2 - 1 #random
 		getNextColor()
-	
-#	if Input.is_action_just_pressed("ui_accept"):
-#		resetGame() # not fully implemented yet
 
 
-# Sets up the buttons' signal connections, messy solution
+# Sets up the buttons' signal connections
 func initialize():
-	$ButtonRing.blue.connect("button_up", self, "_on_blue_button_up")
-	$ButtonRing.red.connect("button_up", self, "_on_red_button_up")
-	$ButtonRing.yellow.connect("button_up", self, "_on_yellow_button_up")
-	$ButtonRing.green.connect("button_up", self, "_on_green_button_up")
+	var buttons: Array = $ButtonRing.get_children()
+	for btn in buttons:
+		var name = str(btn.name.to_lower().split("_")[1])
+		btn.connect("button_up", self, "_on_" + name + "_button_up")
 
 
 # Custom functions in alphabetical order
@@ -60,6 +57,9 @@ func checkInput():
 		$ButtonRing.red.simulatePress()
 	elif Input.is_action_just_pressed("ui_left"):
 		$ButtonRing.green.simulatePress()
+	
+#	if Input.is_action_just_pressed("ui_accept"):
+#		resetGame() # not fully implemented yet
 	
 	#TODO: This is messy too, keyboard releases
 	if Input.is_action_just_released("ui_up"):
@@ -90,11 +90,10 @@ func compareChoices(choice: TextureButton):
 
 # Generates a new color to guess
 func getNextColor():
+	randomize()
 	var next: TextureButton
 	var buttons: Array = $ButtonRing.get_children()
 	var color: int = randi() % buttons.size()
-	
-	randomize()
 	next = buttons[color]
 	buttonList.append(next)
 	isPlayerTurn = true

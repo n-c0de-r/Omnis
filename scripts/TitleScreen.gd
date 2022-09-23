@@ -10,4 +10,4 @@ func _ready():
 #	pass
 
 func _on_Btn_NewGame_pressed():
-	get_tree().change_scene("res://scenes/Game/GameScreen.tscn")
+	get_tree().change_scene("res://scenes/InputScreen.tscn")

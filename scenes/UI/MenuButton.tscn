@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/OpenDyslexia_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/etc/OpenDyslexia_32.tres" type="DynamicFont" id=1]
 
 [node name="MenuButton" type="Button"]
 margin_right = 944.0
