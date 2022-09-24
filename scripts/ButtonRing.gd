@@ -13,3 +13,8 @@ func areAllReleased():
 func releaseAll():
 	for btn in self.get_children():
 		btn.simulateRelease()
+
+# TODO: Makes buttons clickable or unclickable
+func toggleButtonsKlickable(mode: bool):
+	for btn in self.get_children():
+		btn.button_mask = int(mode)

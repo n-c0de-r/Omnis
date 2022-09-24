@@ -1,9 +1,9 @@
 extends Node
 
 # Possible choices
-enum challanges {ROTATE, MIRROR, DOUBLE, CURVED}
+enum trials {ROTATE, DOUBLE, MIRROR, SPIRAL}
 enum cues {COLOR, AUDIO, SYMBOL, SHAKE}
-enum modes {NORMAL, REVERSE, FLIP, CHAOS}
+enum modes {NORMAL, REVERSE, FLIP, RANDOM}
 enum sounds {INSTUMENT, SOUNDS, VOICE, ANIMAL}
 enum symbols {NONE, ARROWS, SHAPES, ANIMAL}
 
@@ -11,7 +11,7 @@ enum symbols {NONE, ARROWS, SHAPES, ANIMAL}
 var first_run: bool = true
 
 # gaming options and presets to start with
-var challenge: Array = [] # none
+var trial: Array = [] # none
 var cue: Array = [0, 1] # color & audio
 var mode: int = 0 # normal
 var sound: int = 0 # start with instruments

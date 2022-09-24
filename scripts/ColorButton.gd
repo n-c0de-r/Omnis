@@ -2,14 +2,15 @@ extends TextureButton
 
 var fullColor: Color = Color(1.0,1.0,1.0,1.0)
 var halfColor: Color = Color(0.5,0.5,0.5,0.5)
-onready var symbols: AspectRatioContainer = $AspCont_Symbols
+#onready var symbols: AspectRatioContainer = $AspCont_Symbols
 
 # change visibility of symbols on presses
-func _process(_delta):
-	if self.pressed and showAnimation():
-		symbols.modulate = fullColor
-	else:
-		symbols.modulate = halfColor
+#func _process(_delta):
+	#print(self.button_mask)
+#	if self.pressed and showAnimation():
+#		symbols.modulate = fullColor
+#	else:
+#		symbols.modulate = halfColor
 
 # Check is animation should be played at all
 func showAnimation():
@@ -22,7 +23,6 @@ func simulatePress():
 	if showAnimation():
 		self.set_toggle_mode(true)
 		self.set_pressed_no_signal(true)
-	
 	return self
 
 # Sets the texture button to released

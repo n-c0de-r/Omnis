@@ -23,6 +23,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	$ButtonRing.toggleButtonsKlickable(isPlayerTurn)
 	
 	if isPlayerTurn: #bool
 		checkInput()
@@ -30,7 +31,7 @@ func _process(_delta):
 		#Change direction every turn if needed
 		if Settings.mode == Settings.modes.FLIP:
 			playDirection *= -1 #change every turn
-		if Settings.mode == Settings.modes.CHAOS:
+		if Settings.mode == Settings.modes.RANDOM:
 		#Generates a -1 or +1 only
 			playDirection *= (randi()%2) * 2 - 1 #random
 		getNextColor()
@@ -85,7 +86,7 @@ func compareChoices(choice: TextureButton):
 		checkPoint += playDirection
 	else:
 		#TODO: Proper game over screen and transition
-		get_tree().change_scene("res://scenes/TitleScreen.tscn")
+		get_tree().change_scene("res://scenes/Screens/Title.tscn")
 
 
 # Generates a new color to guess

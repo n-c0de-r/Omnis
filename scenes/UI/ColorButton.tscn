@@ -1,18 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/gfx/ButtonPressed.png" type="Texture" id=1]
-[ext_resource path="res://assets/gfx/ButtonNormal.png" type="Texture" id=2]
-[ext_resource path="res://assets/gfx/ButtonMask.png" type="BitMap" id=3]
+[ext_resource path="res://assets/gfx/ui/ButtonPressed.png" type="Texture" id=1]
+[ext_resource path="res://assets/gfx/ui/ButtonNormal.png" type="Texture" id=2]
+[ext_resource path="res://assets/gfx/ui/ButtonMask.png" type="BitMap" id=3]
 [ext_resource path="res://scripts/ColorButton.gd" type="Script" id=4]
-[ext_resource path="res://assets/gfx/ShapeArrow.png" type="Texture" id=5]
-[ext_resource path="res://assets/gfx/ShapeCircle.png" type="Texture" id=6]
-[ext_resource path="res://assets/gfx/ShapeStar.png" type="Texture" id=7]
-[ext_resource path="res://assets/gfx/ShapeTriangle.png" type="Texture" id=8]
-[ext_resource path="res://assets/gfx/ShapeDiamond.png" type="Texture" id=9]
-[ext_resource path="res://assets/gfx/AccessSubON.png" type="Texture" id=10]
-[ext_resource path="res://assets/gfx/AccessSubsOFF.png" type="Texture" id=11]
-[ext_resource path="res://assets/gfx/AccessSpeechON.png" type="Texture" id=12]
-[ext_resource path="res://assets/gfx/AccessSpeechOFF.png" type="Texture" id=13]
 
 [node name="TxtBtn_Color" type="TextureButton"]
 anchor_left = 0.5
@@ -28,78 +19,12 @@ mouse_default_cursor_shape = 2
 input_pass_on_modal_close_click = false
 size_flags_horizontal = 4
 size_flags_vertical = 0
+button_mask = 0
+keep_pressed_outside = true
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 1 )
 texture_click_mask = ExtResource( 3 )
 script = ExtResource( 4 )
-
-[node name="AspCont_Symbols" type="AspectRatioContainer" parent="."]
-modulate = Color( 0.498039, 0.498039, 0.498039, 0.501961 )
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -67.5
-margin_top = 18.0
-margin_right = 82.5
-margin_bottom = 168.0
-grow_horizontal = 2
-grow_vertical = 2
-rect_scale = Vector2( 0.9, 0.9 )
-mouse_filter = 2
-input_pass_on_modal_close_click = false
-
-[node name="TxtRct_Arrow" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 5 )
-
-[node name="TxtRct_Circle" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 6 )
-
-[node name="TxtRct_Diamond" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 9 )
-
-[node name="TxtRct_Star" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 7 )
-
-[node name="TxtRct_Triangle" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 8 )
-
-[node name="TxtRct_SubsON" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 10 )
-
-[node name="TxtRct_SubsOFF" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 11 )
-
-[node name="TxtRct_SpeechON" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 12 )
-
-[node name="TxtRct_SpeechOFF" type="TextureRect" parent="AspCont_Symbols"]
-visible = false
-margin_right = 150.0
-margin_bottom = 150.0
-texture = ExtResource( 13 )
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
