@@ -18,6 +18,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Settings="*res://Global.gd"
+Numbers="*res://numbers.gd"
 
 [display]
 

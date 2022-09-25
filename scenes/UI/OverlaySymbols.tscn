@@ -8,7 +8,7 @@
 [ext_resource path="res://assets/gfx/symbols/Arrow.png" type="Texture" id=6]
 [ext_resource path="res://assets/gfx/symbols/AnimalDog.png" type="Texture" id=7]
 [ext_resource path="res://assets/gfx/accessibility/AccessSubON.png" type="Texture" id=8]
-[ext_resource path="res://scenes/UI/ButtonRing.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/UI/Ring_Buttons.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/gfx/accessibility/AccessSpeechOFF.png" type="Texture" id=10]
 [ext_resource path="res://assets/gfx/symbols/AnimalCow.png" type="Texture" id=11]
 [ext_resource path="res://assets/gfx/symbols/ShapeClub.png" type="Texture" id=12]
@@ -34,11 +34,13 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
 [node name="ButtonRing" parent="." instance=ExtResource( 9 )]
+visible = false
 margin_left = -640.0
 margin_top = -360.0
 margin_right = 640.0
@@ -287,65 +289,6 @@ mouse_filter = 2
 theme = SubResource( 1 )
 texture = ExtResource( 5 )
 
-[node name="Select" type="Control" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-mouse_filter = 2
-
-[node name="UP" type="TextureRect" parent="Select"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -75.0
-margin_top = -305.0
-margin_right = 75.0
-margin_bottom = -155.0
-rect_pivot_offset = Vector2( 75, 75 )
-mouse_filter = 2
-theme = SubResource( 1 )
-texture = ExtResource( 23 )
-
-[node name="RIGHT" type="TextureRect" parent="Select"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 155.0
-margin_top = -75.0
-margin_right = 305.0
-margin_bottom = 75.0
-rect_pivot_offset = Vector2( 75, 75 )
-mouse_filter = 2
-theme = SubResource( 1 )
-texture = ExtResource( 23 )
-
-[node name="DOWN" type="TextureRect" parent="Select"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -75.0
-margin_top = 155.0
-margin_right = 75.0
-margin_bottom = 305.0
-rect_pivot_offset = Vector2( 75, 75 )
-mouse_filter = 2
-theme = SubResource( 1 )
-texture = ExtResource( 23 )
-
-[node name="LEFT" type="TextureRect" parent="Select"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -305.0
-margin_top = -75.0
-margin_right = -155.0
-margin_bottom = 75.0
-rect_pivot_offset = Vector2( 75, 75 )
-mouse_filter = 2
-theme = SubResource( 1 )
-texture = ExtResource( 23 )
-
 [node name="Modes" type="Control" parent="."]
 visible = false
 anchor_left = 0.5
@@ -465,6 +408,125 @@ rect_pivot_offset = Vector2( 75, 75 )
 mouse_filter = 2
 theme = SubResource( 1 )
 texture = ExtResource( 20 )
+
+[node name="Select" type="Control" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+mouse_filter = 2
+
+[node name="UP" type="TextureRect" parent="Select"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -75.0
+margin_top = -305.0
+margin_right = 75.0
+margin_bottom = -155.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="RIGHT" type="TextureRect" parent="Select"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 155.0
+margin_top = -75.0
+margin_right = 305.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="DOWN" type="TextureRect" parent="Select"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_top = 155.0
+margin_right = 75.0
+margin_bottom = 305.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="LEFT" type="TextureRect" parent="Select"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -305.0
+margin_top = -75.0
+margin_right = -155.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="Select2" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+mouse_filter = 2
+
+[node name="UP" type="TextureRect" parent="Select2"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -75.0
+margin_top = -305.0
+margin_right = 75.0
+margin_bottom = -155.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="RIGHT" type="TextureRect" parent="Select2"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 155.0
+margin_top = -75.0
+margin_right = 305.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="DOWN" type="TextureRect" parent="Select2"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -75.0
+margin_top = 155.0
+margin_right = 75.0
+margin_bottom = 305.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
+
+[node name="LEFT" type="TextureRect" parent="Select2"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -305.0
+margin_top = -75.0
+margin_right = -155.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
+texture = ExtResource( 23 )
 
 [node name="Settings" type="Control" parent="."]
 visible = false

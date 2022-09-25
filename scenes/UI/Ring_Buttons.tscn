@@ -21,8 +21,6 @@ data = {
 }
 
 [node name="ButtonRing" type="Control"]
-margin_right = 1280.0
-margin_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 rect_pivot_offset = Vector2( 640, 360 )

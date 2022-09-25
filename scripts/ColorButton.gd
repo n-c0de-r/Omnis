@@ -14,7 +14,7 @@ var halfColor: Color = Color(0.5,0.5,0.5,0.5)
 
 # Check is animation should be played at all
 func showAnimation():
-	return Settings.cues.COLOR in Settings.cue
+	return true#Settings.cues.COLOR in Settings.cue
 
 # Sets the texture button to pressed
 func simulatePress():

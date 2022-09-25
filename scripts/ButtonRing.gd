@@ -15,6 +15,10 @@ func releaseAll():
 		btn.simulateRelease()
 
 # TODO: Makes buttons clickable or unclickable
-func toggleButtonsKlickable(mode: bool):
+func toggleButtonsKlickable(flag: bool):
 	for btn in self.get_children():
-		btn.button_mask = int(mode)
+		btn.button_mask = int(flag)
+		if flag:
+			btn.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+		else:
+			btn.mouse_default_cursor_shape = CURSOR_FORBIDDEN

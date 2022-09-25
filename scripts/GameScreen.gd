@@ -3,42 +3,36 @@ extends Control
 # Game loop variables
 var isPlayerTurn: bool = false
 
-var checkPoint: int = 0
-var playDirection: int = 1 # 1 forward, -1 reverse
+var checkPoint: int = 0 # Which button is compared
 var timerCount: int = 0
 
 var buttonList: Array = []
+var guessList: Array = []
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#updateDirection("TODO") # maybe this?
-	# Maybe move into initialize?
-	if Settings.mode == Settings.modes.NORMAL:
-		playDirection = 1 # forward
-	if Settings.mode == Settings.modes.REVERSE:
-		playDirection = -1 #reverse
-	initialize()
-	getNextColor()
+	_setTexts($ButtonRing.get_rotation() / 90)
+	_togglePlayer(isPlayerTurn)
+	_connectSignals()
+	_getNextColor()
+	$Timer.start(2 * Numbers.timerFactor)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	$ButtonRing.toggleButtonsKlickable(isPlayerTurn)
 	
 	if isPlayerTurn: #bool
-		checkInput()
-	else:
-		#Change direction every turn if needed
-		if Settings.mode == Settings.modes.FLIP:
-			playDirection *= -1 #change every turn
-		if Settings.mode == Settings.modes.RANDOM:
-		#Generates a -1 or +1 only
-			playDirection *= (randi()%2) * 2 - 1 #random
-		getNextColor()
-
+		_checkInput()
+		
+	elif (!isPlayerTurn && checkPoint == guessList.size()):
+		checkPoint = 0
+		# Get as many new buttons as counter
+		for i in Numbers.spiralCounter:
+			_getNextColor()
+		_rotateButtons()
 
 # Sets up the buttons' signal connections
-func initialize():
+func _connectSignals():
 	var buttons: Array = $ButtonRing.get_children()
 	for btn in buttons:
 		var name = str(btn.name.to_lower().split("_")[1])
@@ -46,7 +40,7 @@ func initialize():
 
 
 # Custom functions in alphabetical order
-func checkInput():
+func _checkInput():
 	var playerChoice: TextureButton
 	
 	#TODO: This looks messy, keyboard presses
@@ -59,8 +53,8 @@ func checkInput():
 	elif Input.is_action_just_pressed("ui_left"):
 		$ButtonRing.green.simulatePress()
 	
-#	if Input.is_action_just_pressed("ui_accept"):
-#		resetGame() # not fully implemented yet
+	if Input.is_action_just_pressed("ui_cancel"):
+		resetGame() # not fully implemented yet
 	
 	#TODO: This is messy too, keyboard releases
 	if Input.is_action_just_released("ui_up"):
@@ -73,66 +67,60 @@ func checkInput():
 		playerChoice = $ButtonRing.green.simulateRelease()
 	
 	# Compares player choices, only if no button is pressed
-	if checkPoint != buttonList.size():
+	if checkPoint < guessList.size():
 		if playerChoice != null and $ButtonRing.areAllReleased():
-			compareChoices(playerChoice)
+			_compareChoices(playerChoice)
 	else:
-		isPlayerTurn = false
-		checkPoint = 0
+		_togglePlayer(!isPlayerTurn)
 
 
-func compareChoices(choice: TextureButton):
-	if(choice == buttonList[checkPoint]):
-		checkPoint += playDirection
+func _compareChoices(choice: TextureButton):
+	if(choice == guessList[checkPoint]):
+		checkPoint += Numbers.playDirection
 	else:
 		#TODO: Proper game over screen and transition
 		get_tree().change_scene("res://scenes/Screens/Title.tscn")
 
 
 # Generates a new color to guess
-func getNextColor():
+func _getNextColor():
 	randomize()
+	# Get next button for replay
 	var next: TextureButton
 	var buttons: Array = $ButtonRing.get_children()
 	var color: int = randi() % buttons.size()
 	next = buttons[color]
 	buttonList.append(next)
-	isPlayerTurn = true
+	
+	# Gets shifted button for guessing
+	next = buttons[(color + Numbers.mirrorShift)% buttons.size()]
+	
+	# Get amount of presses of each button
+	for i in Numbers.doubleCounter:
+		guessList.append(next)
+	
 	# Delay before next order plays
 	timerCount = 0
-	$Timer.start(1)
+	$Timer.start(1 * Numbers.timerFactor)
 
 
 # Plays the animation of a simulated button press
-func playButtonPress():
+func _playButtonPress():
 	var button: TextureButton
-	if timerCount != buttonList.size():
-		button = buttonList[timerCount]
-		$ButtonRing.releaseAll() # just in case
-		button.simulatePress()
-		button.startTimer(1)
-		timerCount += 1
+	button = buttonList[timerCount]
+	$ButtonRing.releaseAll() # just in case
+	button.simulatePress()
+	button.startTimer(1 * Numbers.timerFactor)
+	timerCount += 1
+
 
 # Resets the game
 func resetGame():
 	$ButtonRing.releaseAll()
 	buttonList.clear()
+	guessList.clear()
 	checkPoint = 0
 	isPlayerTurn = false
-
-
-# Function to change check order
-# Not all are needed every turn, probably obsolete
-#func updateDirection(choice):
-	#if choice == Settings.Modes.NORMAL:
-		#playDirection = 1 # forward
-	#if choice == Settings.Modes.REVERSE:
-		#playDirection = -1 #reverse
-	#if choice == Settings.Modes.FLIP:
-		#playDirection *= -1 #change every turn
-	#if choice == Settings.Modes.CHAOS:
-		#Generates a -1 or +1 only
-		#playDirection *= randi(1) * 2 -1 #random
 
 
 # Signal callbacks, it's a mess...
@@ -148,6 +136,47 @@ func _on_green_button_up():
 
 # Delays the next press animation
 func _on_Timer_timeout():
-	playButtonPress()
-	# 1s light up + 1s till next = 2s
-	$Timer.start(2)
+	if timerCount < buttonList.size():
+		_playButtonPress()
+		# 1s light up + 1s till next = 2s
+		$Timer.start(2 * Numbers.timerFactor)
+	else:
+		_togglePlayer(!isPlayerTurn)
+
+
+func _rotateButtons():
+	# TODO: Make animations programatically
+#	var animPlayer: AnimationPlayer = AnimationPlayer.new()
+#	var animation: Animation = Animation.new()
+#	$ButtonRing.add_child(animPlayer)
+#	animPlayer.add_animation("RotateClockwise", animation)
+#	animation.add_track(Animation.TYPE_VALUE)
+#	animation.track_insert_key(0, 0.0, $ButtonRing.get_rotation())
+#	animation.track_insert_key(0, 1.0, $ButtonRing.get_rotation()+90)
+#	animPlayer.play("RotateClockwise")
+#	$ButtonRing.remove_child(animPlayer)
+	pass
+
+
+func _setTexts(shift: int):
+	var size: int = $ButtonRing.get_children().size()
+	var colors: Array = ["Blue", "Red", "Yellow", "Green"]
+	for i in size:
+		var label: Label = $TextRing.get_child((i+shift) % size)
+		label.text = colors[i]
+
+# Changes state of buttons and player turn
+func _togglePlayer(flag: bool):
+	isPlayerTurn = flag
+	
+	# Visualize player turn
+	$TxtBtn_Center.set_pressed_no_signal(flag)
+	
+	# Update info texts
+	if flag:
+		$TextRing/CENTER.text = "Your\nTurn"
+	else:
+		$TextRing/CENTER.text = "Com\nTurn"
+		
+	# Set buttons clickable or not
+	$ButtonRing.toggleButtonsKlickable(flag)
