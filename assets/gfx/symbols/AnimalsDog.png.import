@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/AnimalCat.png-7a4da35da5bfaa132b738533693d59ef.stex"
+path="res://.import/AnimalsDog.png-3f6ac4722523f9a583c608ef8add7c74.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/symbols/AnimalCat.png"
-dest_files=[ "res://.import/AnimalCat.png-7a4da35da5bfaa132b738533693d59ef.stex" ]
+source_file="res://assets/gfx/symbols/AnimalsDog.png"
+dest_files=[ "res://.import/AnimalsDog.png-3f6ac4722523f9a583c608ef8add7c74.stex" ]
 
 [params]
 

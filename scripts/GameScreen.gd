@@ -1,10 +1,15 @@
 extends Control
 
+var currentInput: String = ""
+
 # Game loop variables
 var isPlayerTurn: bool = false
 
 var checkPoint: int = 0 # Which button is compared
 var timerCount: int = 0
+
+var colors: Array = []
+var ring: Array = []
 
 var buttonList: Array = []
 var guessList: Array = []
@@ -12,11 +17,12 @@ var guessList: Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_setTexts($ButtonRing.get_rotation() / 90)
-	_togglePlayer(isPlayerTurn)
+	ring = $Buttons.ring
+	for btn in ring:
+		colors.append(btn.name)
+	_setButtons()
 	_connectSignals()
 	_getNextColor()
-	$Timer.start(2 * Numbers.timerFactor)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -26,57 +32,60 @@ func _process(_delta):
 		
 	elif (!isPlayerTurn && checkPoint == guessList.size()):
 		checkPoint = 0
+		Utils.update()
+		if "Rotate" in Utils.trials:
+			_rotate() 
+		
 		# Get as many new buttons as counter
-		for i in Numbers.spiralCounter:
+		for i in Utils.spiralCounter:
 			_getNextColor()
-		_rotateButtons()
 
 # Sets up the buttons' signal connections
 func _connectSignals():
-	var buttons: Array = $ButtonRing.get_children()
-	for btn in buttons:
-		var name = str(btn.name.to_lower().split("_")[1])
+#	var buttons: Array = $Buttons.all
+	for btn in ring:
+		var name = str(btn.name.to_lower())
 		btn.connect("button_up", self, "_on_" + name + "_button_up")
-
 
 # Custom functions in alphabetical order
 func _checkInput():
-	var playerChoice: TextureButton
+	#var lastInput = currentInput
+	var playerChoice: String = ""
 	
 	#TODO: This looks messy, keyboard presses
 	if Input.is_action_just_pressed("ui_up"):
-		$ButtonRing.blue.simulatePress()
-	elif Input.is_action_just_pressed("ui_down"):
-		$ButtonRing.yellow.simulatePress()
+		$Buttons.press(colors[0])
 	elif Input.is_action_just_pressed("ui_right"):
-		$ButtonRing.red.simulatePress()
+		$Buttons.press(colors[1])
+	elif Input.is_action_just_pressed("ui_down"):
+		$Buttons.press(colors[2])
 	elif Input.is_action_just_pressed("ui_left"):
-		$ButtonRing.green.simulatePress()
+		$Buttons.press(colors[3])
 	
 	if Input.is_action_just_pressed("ui_cancel"):
-		resetGame() # not fully implemented yet
+		_resetGame() # not fully implemented yet
 	
 	#TODO: This is messy too, keyboard releases
 	if Input.is_action_just_released("ui_up"):
-		playerChoice = $ButtonRing.blue.simulateRelease()
-	elif Input.is_action_just_released("ui_down"):
-		playerChoice = $ButtonRing.yellow.simulateRelease()
+		playerChoice = $Buttons.release(colors[0])
 	elif Input.is_action_just_released("ui_right"):
-		playerChoice = $ButtonRing.red.simulateRelease()
+		playerChoice = $Buttons.release(colors[1])
+	elif Input.is_action_just_released("ui_down"):
+		playerChoice = $Buttons.release(colors[2])
 	elif Input.is_action_just_released("ui_left"):
-		playerChoice = $ButtonRing.green.simulateRelease()
-	
+		playerChoice = $Buttons.release(colors[3])
+	print(playerChoice)
 	# Compares player choices, only if no button is pressed
 	if checkPoint < guessList.size():
-		if playerChoice != null and $ButtonRing.areAllReleased():
+		if playerChoice != "" and $Buttons.areAllReleased():
 			_compareChoices(playerChoice)
 	else:
-		_togglePlayer(!isPlayerTurn)
+		_togglePlayer()
 
 
-func _compareChoices(choice: TextureButton):
+func _compareChoices(choice: String):
 	if(choice == guessList[checkPoint]):
-		checkPoint += Numbers.playDirection
+		checkPoint += Utils.playDirection
 	else:
 		#TODO: Proper game over screen and transition
 		get_tree().change_scene("res://scenes/Screens/Title.tscn")
@@ -86,41 +95,48 @@ func _compareChoices(choice: TextureButton):
 func _getNextColor():
 	randomize()
 	# Get next button for replay
-	var next: TextureButton
-	var buttons: Array = $ButtonRing.get_children()
-	var color: int = randi() % buttons.size()
-	next = buttons[color]
+	var next: String
+	var color: int = randi() % ring.size()
+	next = colors[color]
+	# shown list
 	buttonList.append(next)
 	
-	# Gets shifted button for guessing
-	next = buttons[(color + Numbers.mirrorShift)% buttons.size()]
+	# Gets shifted button for guessing if needed
+	next = colors[(color + Utils.mirrorShift) % colors.size()]
 	
 	# Get amount of presses of each button
-	for i in Numbers.doubleCounter:
+	for i in Utils.doubleCounter:
 		guessList.append(next)
-	
-	# Delay before next order plays
-	timerCount = 0
-	$Timer.start(1 * Numbers.timerFactor)
-
-
-# Plays the animation of a simulated button press
-func _playButtonPress():
-	var button: TextureButton
-	button = buttonList[timerCount]
-	$ButtonRing.releaseAll() # just in case
-	button.simulatePress()
-	button.startTimer(1 * Numbers.timerFactor)
-	timerCount += 1
+	# Play the visible list
+	$Buttons.playList(buttonList)
 
 
 # Resets the game
-func resetGame():
-	$ButtonRing.releaseAll()
+func _resetGame():
+	$Buttons.releaseAll()
 	buttonList.clear()
 	guessList.clear()
 	checkPoint = 0
 	isPlayerTurn = false
+
+# Rotates the playfield and the button order
+func _rotate():
+	var direction: int = Utils.randomOne()
+	# Make buttons react according to new positions
+	if direction == 1: # clockwise / right rotation
+		colors.push_front(colors.pop_back())
+	else:
+		colors.push_back(colors.pop_front())
+	# Rotate the colors
+	$Buttons.rotateButtons(direction)
+
+
+# Sets texts and symbols of the buttons
+func _setButtons():
+	var symbols: Array = Utils.symbols[Utils.symbolset]
+	var texts: Array = Utils.texts[Utils.textset]
+	$Buttons.setSymbols(Utils.symbolset, symbols)
+	$Buttons.setTexts(Utils.textset, texts)
 
 
 # Signal callbacks, it's a mess...
@@ -134,49 +150,12 @@ func _on_green_button_up():
 	Input.action_release("ui_left")
 
 
-# Delays the next press animation
-func _on_Timer_timeout():
-	if timerCount < buttonList.size():
-		_playButtonPress()
-		# 1s light up + 1s till next = 2s
-		$Timer.start(2 * Numbers.timerFactor)
-	else:
-		_togglePlayer(!isPlayerTurn)
-
-
-func _rotateButtons():
-	# TODO: Make animations programatically
-#	var animPlayer: AnimationPlayer = AnimationPlayer.new()
-#	var animation: Animation = Animation.new()
-#	$ButtonRing.add_child(animPlayer)
-#	animPlayer.add_animation("RotateClockwise", animation)
-#	animation.add_track(Animation.TYPE_VALUE)
-#	animation.track_insert_key(0, 0.0, $ButtonRing.get_rotation())
-#	animation.track_insert_key(0, 1.0, $ButtonRing.get_rotation()+90)
-#	animPlayer.play("RotateClockwise")
-#	$ButtonRing.remove_child(animPlayer)
-	pass
-
-
-func _setTexts(shift: int):
-	var size: int = $ButtonRing.get_children().size()
-	var colors: Array = ["Blue", "Red", "Yellow", "Green"]
-	for i in size:
-		var label: Label = $TextRing.get_child((i+shift) % size)
-		label.text = colors[i]
-
 # Changes state of buttons and player turn
-func _togglePlayer(flag: bool):
-	isPlayerTurn = flag
-	
-	# Visualize player turn
-	$TxtBtn_Center.set_pressed_no_signal(flag)
-	
-	# Update info texts
-	if flag:
-		$TextRing/CENTER.text = "Your\nTurn"
-	else:
-		$TextRing/CENTER.text = "Com\nTurn"
-		
-	# Set buttons clickable or not
-	$ButtonRing.toggleButtonsKlickable(flag)
+func _togglePlayer():
+	isPlayerTurn = !isPlayerTurn
+	if isPlayerTurn:
+		$Buttons.toggleButtonsClickable(isPlayerTurn)
+
+
+func _on_Buttons_animation_done():
+	_togglePlayer()

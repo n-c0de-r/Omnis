@@ -1,16 +1,16 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://assets/gfx/accessibility/AccessSubOFF.png" type="Texture" id=1]
-[ext_resource path="res://assets/gfx/symbols/AnimalCat.png" type="Texture" id=2]
+[ext_resource path="res://assets/gfx/symbols/AnimalsCat.png" type="Texture" id=2]
 [ext_resource path="res://assets/gfx/accessibility/AccessSpeechON.png" type="Texture" id=3]
-[ext_resource path="res://assets/gfx/symbols/AnimalChick.png" type="Texture" id=4]
+[ext_resource path="res://assets/gfx/symbols/AnimalsChick.png" type="Texture" id=4]
 [ext_resource path="res://assets/gfx/symbols/ShapeDiamond.png" type="Texture" id=5]
 [ext_resource path="res://assets/gfx/symbols/Arrow.png" type="Texture" id=6]
-[ext_resource path="res://assets/gfx/symbols/AnimalDog.png" type="Texture" id=7]
+[ext_resource path="res://assets/gfx/symbols/AnimalsDog.png" type="Texture" id=7]
 [ext_resource path="res://assets/gfx/accessibility/AccessSubON.png" type="Texture" id=8]
-[ext_resource path="res://scenes/UI/Ring_Buttons.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/UI/ButtonsRing.tscn" type="PackedScene" id=9]
 [ext_resource path="res://assets/gfx/accessibility/AccessSpeechOFF.png" type="Texture" id=10]
-[ext_resource path="res://assets/gfx/symbols/AnimalCow.png" type="Texture" id=11]
+[ext_resource path="res://assets/gfx/symbols/AnimalsCow.png" type="Texture" id=11]
 [ext_resource path="res://assets/gfx/symbols/ShapeClub.png" type="Texture" id=12]
 [ext_resource path="res://assets/gfx/symbols/ShapeSpade.png" type="Texture" id=13]
 [ext_resource path="res://assets/gfx/symbols/ShapeHeart.png" type="Texture" id=14]
@@ -23,10 +23,11 @@
 [ext_resource path="res://assets/gfx/gameplay/TrialMirror.png" type="Texture" id=21]
 [ext_resource path="res://assets/gfx/gameplay/ModeFlip.png" type="Texture" id=22]
 [ext_resource path="res://assets/gfx/settings/None.png" type="Texture" id=23]
+[ext_resource path="res://scripts/OverlaySymbols.gd" type="Script" id=24]
 
 [sub_resource type="Theme" id=1]
 
-[node name="SymbolRing" type="Control"]
+[node name="Symbols" type="Control"]
 modulate = Color( 1, 1, 1, 0.501961 )
 anchor_left = 0.5
 anchor_top = 0.5
@@ -35,6 +36,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource( 24 )
 __meta__ = {
 "_edit_use_anchors_": true
 }

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/AnimalCow.png-73276bd04966a9f363c9f580c73f52aa.stex"
+path="res://.import/AnimalsCow.png-b1ac4a7c9db0c5e52fc4d223f76a1a93.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/symbols/AnimalCow.png"
-dest_files=[ "res://.import/AnimalCow.png-73276bd04966a9f363c9f580c73f52aa.stex" ]
+source_file="res://assets/gfx/symbols/AnimalsCow.png"
+dest_files=[ "res://.import/AnimalsCow.png-b1ac4a7c9db0c5e52fc4d223f76a1a93.stex" ]
 
 [params]
 

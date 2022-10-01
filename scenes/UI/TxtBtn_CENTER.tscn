@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/gfx/ui/MiddlePressed.png" type="Texture" id=1]
+[ext_resource path="res://assets/gfx/ui/MiddleNormal.png" type="Texture" id=2]
+[ext_resource path="res://assets/etc/OpenDyslexia_32.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/gfx/ui/MiddleMask.png" type="BitMap" id=4]
+[ext_resource path="res://scripts/MiddleButton.gd" type="Script" id=5]
+
+[sub_resource type="Theme" id=1]
+
+[node name="TxtBtn_Center" type="TextureButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -164.0
+margin_top = -164.0
+margin_right = 164.0
+margin_bottom = 164.0
+toggle_mode = true
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 1 )
+texture_click_mask = ExtResource( 4 )
+script = ExtResource( 5 )
+
+[node name="Text" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -231.5
+margin_top = -231.5
+margin_right = 231.5
+margin_bottom = 231.5
+grow_horizontal = 2
+rect_min_size = Vector2( 463, 463 )
+rect_pivot_offset = Vector2( 240, 240 )
+custom_fonts/font = ExtResource( 3 )
+text = "Middle"
+align = 1
+valign = 1
+
+[node name="Symbol" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -75.0
+margin_right = 75.0
+margin_bottom = 75.0
+rect_pivot_offset = Vector2( 75, 75 )
+mouse_filter = 2
+theme = SubResource( 1 )
